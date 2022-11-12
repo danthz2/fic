@@ -13,62 +13,71 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, dynamic>> categoryList = [
-    {
-      'text': 'All',
-      'textColor': Colors.white,
-      'bgColor': const Color(0xff9A9390),
-    },
-    {
-      'text': 'Living Room',
-      'textColor': const Color(0xff4A4543),
-      'bgColor': Colors.transparent,
-    },
-    {
-      'text': 'Bedroom',
-      'textColor': const Color(0xff4A4543),
-      'bgColor': Colors.transparent,
-    },
-    {
-      'text': 'Dining Room',
-      'textColor': const Color(0xff4A4543),
-      'bgColor': Colors.transparent,
-    },
-    {
-      'text': 'Kitchen',
-      'textColor': const Color(0xff4A4543),
-      'bgColor': Colors.transparent,
-    },
-  ];
+  final List categoryList = ['All', 'Living Room', 'Bedroom', 'Dining Room', 'Kitchen'];
 
-  int selectedIndex = 0;
+  int _selectedIndex = 0;
+  bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            color: Color(0xff4A4543),
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {},
-          icon: Image.asset('assets/icons/ic_menu.png'),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Image.asset('assets/icons/ic_search.png'),
-          ),
-        ],
-      ),
+      appBar: _isSearching
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Search Furniture',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey[400]!,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey[400]!,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                ),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => setState(() {
+                    _isSearching = false;
+                  }),
+                  icon: const Icon(
+                    Icons.close,
+                    color: Color(0xff4A4543),
+                  ),
+                ),
+              ],
+            )
+          : AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: const Text(
+                'Home',
+                style: TextStyle(
+                  color: Color(0xff4A4543),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              centerTitle: true,
+              leading: IconButton(
+                onPressed: () {},
+                icon: Image.asset('assets/icons/ic_menu.png'),
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () => setState(() {
+                    _isSearching = true;
+                  }),
+                  icon: Image.asset('assets/icons/ic_search.png'),
+                ),
+              ],
+            ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -87,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 30,
           ),
           SizedBox(
-            height: 40,
+            height: 35,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -96,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: EdgeInsets.only(left: index == 0 ? 14 : 0),
                 child: categoryItem(
                   index: index,
-                  text: categoryList[index]['text'],
+                  text: categoryList[index],
                 ),
               ),
             ),
@@ -136,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     .toList();
                 return FurnitureItem(
                   furnitureItem: data[index],
-                  selectedIndex: index,
                 );
               },
             ),
@@ -199,19 +207,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return GestureDetector(
       onTap: () => setState(() {
-        selectedIndex = index;
+        _selectedIndex = index;
       }),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+        padding: EdgeInsets.symmetric(horizontal: index == 0 ? 30 : 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: selectedIndex == index ? const Color(0xff9A9390) : Colors.transparent,
+          color: _selectedIndex == index ? const Color(0xff9A9390) : Colors.transparent,
         ),
         child: Center(
           child: Text(
             text,
             style: TextStyle(
-              color: selectedIndex == index ? Colors.white : const Color(0xff4A4543),
+              fontSize: 12,
+              color: _selectedIndex == index ? Colors.white : const Color(0xff4A4543),
             ),
           ),
         ),

@@ -2,15 +2,23 @@ import 'package:fic_bootcamp/data/models/furniture_item_model.dart';
 import 'package:fic_bootcamp/ui/screen/detail_furniture.dart';
 import 'package:flutter/material.dart';
 
-class FurnitureItem extends StatelessWidget {
+class FurnitureItem extends StatefulWidget {
   final FurnitureItemModel furnitureItem;
-  final int selectedIndex;
-  const FurnitureItem({Key? key, required this.furnitureItem, required this.selectedIndex}) : super(key: key);
+  const FurnitureItem({
+    Key? key,
+    required this.furnitureItem,
+  }) : super(key: key);
 
+  @override
+  State<FurnitureItem> createState() => _FurnitureItemState();
+}
+
+class _FurnitureItemState extends State<FurnitureItem> {
+  bool _isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, DetailFurniture.routeName, arguments: [furnitureItem, selectedIndex]),
+      onTap: () => Navigator.pushNamed(context, DetailFurniture.routeName, arguments: widget.furnitureItem),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
@@ -26,7 +34,7 @@ class FurnitureItem extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     Image.asset(
-                      furnitureItem.image,
+                      widget.furnitureItem.image,
                       fit: BoxFit.fill,
                     ),
                     Positioned(
@@ -40,10 +48,15 @@ class FurnitureItem extends StatelessWidget {
                           ),
                           color: Colors.white,
                         ),
-                        child: const Icon(
-                          Icons.favorite_outline,
-                          size: 20,
-                          color: Colors.red,
+                        child: GestureDetector(
+                          onTap: () => setState(() {
+                            _isFavorite = !_isFavorite;
+                          }),
+                          child: Icon(
+                            _isFavorite ? Icons.favorite : Icons.favorite_outline,
+                            size: 20,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
                     ),
@@ -58,21 +71,45 @@ class FurnitureItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(furnitureItem.text),
+                    Text(
+                      widget.furnitureItem.text,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xff4A4543),
+                      ),
+                    ),
                     const SizedBox(
                       height: 5.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('\$${furnitureItem.price}'),
+                        Text(
+                          '\$${widget.furnitureItem.price}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20,
+                            color: Color(0xff9A9390),
+                          ),
+                        ),
                         Row(
                           children: [
                             const Icon(
                               Icons.star,
+                              color: Color(0xffEEA427),
                               size: 15,
                             ),
-                            Text('${furnitureItem.rating}'),
+                            const SizedBox(
+                              width: 8.0,
+                            ),
+                            Text(
+                              '${widget.furnitureItem.rating}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Color(0xffBBBBBB),
+                              ),
+                            ),
                           ],
                         )
                       ],

@@ -16,8 +16,7 @@ class _DetailFurnitureState extends State<DetailFurniture> {
   int _count = 1;
   @override
   Widget build(BuildContext context) {
-    final arg = ModalRoute.of(context)?.settings.arguments as List<dynamic>;
-    final furnitureItem = arg[0] as FurnitureItemModel;
+    final furnitureItem = ModalRoute.of(context)?.settings.arguments as FurnitureItemModel;
 
     return Scaffold(
       body: Stack(
