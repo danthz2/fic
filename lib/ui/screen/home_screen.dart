@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 
 import '../widgets/furniture_item.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> categoryList = [
     {
       'text': 'All',
       'textColor': Colors.white,
-      'bgColor': const Color(0xff4A4543),
+      'bgColor': const Color(0xff9A9390),
     },
     {
       'text': 'Living Room',
@@ -35,6 +40,8 @@ class HomeScreen extends StatelessWidget {
       'bgColor': Colors.transparent,
     },
   ];
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +94,9 @@ class HomeScreen extends StatelessWidget {
               itemCount: categoryList.length,
               itemBuilder: (context, index) => Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 14 : 0),
-                child: CategoryItem(
+                child: categoryItem(
+                  index: index,
                   text: categoryList[index]['text'],
-                  textColor: categoryList[index]['textColor'],
-                  bgColor: categoryList[index]['bgColor'],
                 ),
               ),
             ),
@@ -130,6 +136,7 @@ class HomeScreen extends StatelessWidget {
                     .toList();
                 return FurnitureItem(
                   furnitureItem: data[index],
+                  selectedIndex: index,
                 );
               },
             ),
@@ -144,7 +151,7 @@ class HomeScreen extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Text('tes'),
+            icon: const Text('tes'),
             activeIcon: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
@@ -185,32 +192,27 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class CategoryItem extends StatelessWidget {
-  final String text;
-  final Color textColor;
-  final Color bgColor;
-  const CategoryItem({
-    Key? key,
-    required this.text,
-    required this.textColor,
-    required this.bgColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: bgColor,
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: textColor,
+  Widget categoryItem({
+    required text,
+    required index,
+  }) {
+    return GestureDetector(
+      onTap: () => setState(() {
+        selectedIndex = index;
+      }),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: selectedIndex == index ? const Color(0xff9A9390) : Colors.transparent,
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: selectedIndex == index ? Colors.white : const Color(0xff4A4543),
+            ),
           ),
         ),
       ),

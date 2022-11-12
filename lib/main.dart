@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: HomeScreen.routeName,
       routes: {
-        HomeScreen.routeName: (context) => HomeScreen(),
+        HomeScreen.routeName: (context) => const HomeScreen(),
         DetailFurniture.routeName: (context) => const DetailFurniture(),
       },
     );

@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 class FurnitureItem extends StatelessWidget {
   final FurnitureItemModel furnitureItem;
-  const FurnitureItem({Key? key, required this.furnitureItem}) : super(key: key);
+  final int selectedIndex;
+  const FurnitureItem({Key? key, required this.furnitureItem, required this.selectedIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, DetailFurniture.routeName, arguments: furnitureItem),
+      onTap: () => Navigator.pushNamed(context, DetailFurniture.routeName, arguments: [furnitureItem, selectedIndex]),
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
